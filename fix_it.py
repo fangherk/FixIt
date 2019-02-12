@@ -75,8 +75,8 @@ class FixItGame:
 
             self.stats()
             print("Ending Round\n\n\n")
-            print("End Game.\n\n\n")
-            self.scoring()
+        print("End Game.\n\n\n")
+        self.scoring()
 
 class Player():
     def __init__(self, name, card):
