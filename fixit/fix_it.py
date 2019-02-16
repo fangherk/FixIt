@@ -1,28 +1,34 @@
 import random
 from collections import deque, namedtuple
 
+from Order import Order
+from MatchingEngine import MatchingEngine
+from Player import Player
+
 class FixItGame:
     def __init__(self):
         self.deck = deque(list(range(1,14))*4)
         self.rounds = 3
         self.middle = []
+        self.engine = MatchingEngine()
         self.accounting = {}
 
     def set_up_game(self, players):
-        print("Shuffling Deck of {} cards".format(len(self.deck)))
+        print("\n\nShuffling Deck of {} cards".format(len(self.deck)))
         random.shuffle(self.deck)
 
         print("Draw Three Cards and put them in the middle")
         for _ in range(self.rounds):
             self.middle.append(self.deck.pop())
 
-        print("Adding players to game")
+        print("Adding players to game\n\n\n")
 
         for name in players:
             draw_card = self.deck.pop()
             self.accounting[name] = Player(name, draw_card)
 
-        print(self.stats())
+        print("Displaying accounting book")
+        self.stats()
         print("Set up complete\n\n\n\n")
 
     def stats(self):
@@ -55,7 +61,7 @@ class FixItGame:
                 winner_profit = profit
 
         print("Fair Value: {}".format(total_value))
-        print("Player {} wins", winner.name)
+        print("Player {} wins".format(winner.name))
 
     def play(self):
         num_cards = len(self.accounting) + self.rounds
@@ -63,38 +69,43 @@ class FixItGame:
             print("Total Cards in Play {}".format(num_cards))
             print("Revealing Cards: {}\n".format(self.middle[:turn]))
             while True:
-                buyer = input("Press O to end turn. Who would like to buy?\n")
-                if buyer == "O":
+                buyer = input("Press 0 to end turn. Press 1 for buy. Press 2 for sell.\n")
+                if buyer == "0":
                     break
-                seller = input("What is the seller id?\n")
+
+                person = input("What is your id?\n")
+                # ASSUME integer values
                 price = input("What is the price of the share?\n")
 
-                Score = namedtuple("Score", "pot_value num_shares party")
-                self.accounting[int(buyer)].add_trade(Score(int(price), -1, seller))
-                self.accounting[int(seller)].add_trade(Score(int(price), 1, buyer))
+                order = Order(person, int(price), 1)
+                if buyer == "1":
+                    self.engine.add_order(order, "BUY")
+                if buyer == "2":
+                    self.engine.add_order(order, "SELL")
+
+                self.engine.balance_orders()
+                print(self.engine)
+                #Score = namedtuple("Score", "pot_value num_shares party")
+                #self.accounting[int(buyer)].add_trade(Score(int(price), -1, seller))
+                #self.accounting[int(seller)].add_trade(Score(int(price), 1, buyer))
 
             self.stats()
             print("Ending Round\n\n\n")
+            self.engine.wipe()
         print("End Game.\n\n\n")
         self.scoring()
 
-class Player():
-    def __init__(self, name, card):
-        self.name = name
-        self.card = card
-        self.history = []
-
-    def add_trade(self, trade):
-        self.history.append(trade)
-
-    def __str__(self):
-        return "Player {} History: {} ".format(str(self.name),str(self.history))
-
 def simulate_game():
     game = FixItGame()
-    players = [1,2,3]
+    num_players = input("How many players are there?\t")
+    players = list(range(1, int(num_players)+1))
     game.set_up_game(players)
-    game.play()
+
+    start = input("Start game? (y) \t")
+    if start == "y":
+        game.play()
+    else:
+        print("No game.")
 
 if __name__ == "__main__":
     simulate_game()
