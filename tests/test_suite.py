@@ -7,6 +7,7 @@ def suite():
     test_suite.addTest(TestMatchingEngine('test_empty_engine'))
     test_suite.addTest(TestMatchingEngine('test_add_order'))
     test_suite.addTest(TestMatchingEngine('test_match_simple_order'))
+    test_suite.addTest(TestMatchingEngine('test_make_many_same_orders'))
     return test_suite
 
 if __name__ == '__main__':

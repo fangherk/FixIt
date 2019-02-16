@@ -10,6 +10,9 @@ class Level:
         return "Orders:{}-Price:{}-Time:{}".format(self.orders,
                                                    self.price,
                                                    self.time)
+    def update_time(self):
+        if self.orders:
+            self.time = self.orders[0].time
 
     def __str__(self):
         return "Orders:{}-Price:{}-Time:{}".format(self.orders,
@@ -26,11 +29,11 @@ class MatchingEngine:
             new_level = Level([order], order.price, order.time)
             book.append(new_level)
         else:
-            orders = [level.price for level in book]
-            insert_index = bisect.bisect_left(orders, order.price)
+            level_prices = [level.price for level in book]
+            insert_index = bisect.bisect_left(level_prices, order.price)
             current_level = book[insert_index]
             if current_level.price == order.price:
-                current_level.append(order)
+                current_level.orders.append(order)
             else:
                 new_level = Level([order], order.price, order.time)
                 book.insert(insert_index, new_level)
@@ -54,23 +57,26 @@ class MatchingEngine:
                 order = lowest_offer.orders[0]
                 trade_price = highest_bid.price
                 num_orders = num_offers
-                data2, data1 = lowest_offer, highest_bid
+                trans2, trans1 = lowest_offer, highest_bid
             else:
                 order = highest_bid.orders[0]
                 trade_price = lowest_offer.price
                 num_orders = num_bids
-                data2, data1 = highest_bid, lowest_offer
+                trans2, trans1 = highest_bid, lowest_offer
 
             count = 0
             while count < num_orders:
                 # Same Level check.
-                matching_order = data1.orders[count]
+                matching_order = trans1.orders[count]
                 if order.name == matching_order.name:
                     count +=1
                     continue
                 else:
-                    data1.orders.pop(count)
-                    data2.orders.pop(0)
+                    trans1.orders.pop(count)
+                    trans2.orders.pop(0)
+                    trans1.update_time()
+                    trans2.update_time()
+
                     print("Order matched {} sold {} bought @ {}".format(order.name,
                                                                         matching_order.name,
                                                                         trade_price))
@@ -90,4 +96,3 @@ class MatchingEngine:
     def wipe(self):
         self.bids.clear()
         self.offers.clear()
-

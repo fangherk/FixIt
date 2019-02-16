@@ -43,4 +43,17 @@ class TestMatchingEngine(unittest.TestCase):
         self.assertEqual(len(self.engine.bids), 0)
         self.assertEqual(len(self.engine.offers), 0)
 
+    def test_make_many_same_orders(self):
 
+        for _ in range(10):
+            order = Order.Order("A", 20)
+            self.engine.add_order(order, "BUY")
+
+        #only 1 level
+        self.assertEqual(len(self.engine.bids), 1)
+
+        #check length bids = number orders made
+        self.assertEqual(len(self.engine.bids[0].orders), 10)
+
+        #time of level is equal to time of first order
+        self.assertEqual(self.engine.bids[0].time, self.engine.bids[0].orders[0].time)
