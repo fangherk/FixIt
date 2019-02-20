@@ -70,12 +70,14 @@ class MatchingEngine:
     def balance_orders(self):
         """Find out if a trade is completed and return the trade"""
         if not self.bids or not self.offers:
-            return
+            return None
 
         highest_bid, lowest_offer = self.bids[-1], self.offers[0]
         Trade = namedtuple("Trade", "seller buyer score")
+        trade = None
         order_made = None
         if lowest_offer.price <= highest_bid.price:
+
             bid_time, offer_time = highest_bid.time, lowest_offer.time
             num_offers, num_bids = len(highest_bid.orders), len(
                 lowest_offer.orders)

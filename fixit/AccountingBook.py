@@ -13,7 +13,6 @@ class AccountingBook:
         """Adds trade to each relevant player's history"""
 
         Score = namedtuple("Score", "pot_value num_shares party")
-        print(trade)
         self.players[trade.buyer].add_trade(
             Score(trade.score, 1, trade.seller))
         self.players[trade.seller].add_trade(
