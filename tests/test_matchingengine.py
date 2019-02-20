@@ -67,6 +67,7 @@ class TestMatchingEngine:
         assert len(self.engine.bids) == 0
 
     def test_specific_trade(self):
+        """Test balancing ordrs when there is no trade to make"""
         order1 = Order.Order("1", 20)
         self.engine.add_order(order1, "BUY")
 
