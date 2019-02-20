@@ -1,6 +1,6 @@
 import pytest
-import unittest
 from fixit import Order, MatchingEngine
+
 
 class TestMatchingEngine:
     def setup(self):
@@ -24,7 +24,6 @@ class TestMatchingEngine:
         assert order_result.price == 20
         assert order_result.name == "Joe"
 
-
     def test_match_simple_order(self):
         """ Match an order """
         order = Order.Order("Joe", 20)
@@ -42,6 +41,7 @@ class TestMatchingEngine:
         assert len(self.engine.offers) == 0
 
     def test_make_many_same_orders(self):
+        """Test if many of the same order can be made by a single player"""
         for _ in range(10):
             order = Order.Order("A", 20)
             self.engine.add_order(order, "BUY")
@@ -54,3 +54,14 @@ class TestMatchingEngine:
 
         #time of level is equal to time of first order
         assert self.engine.bids[0].time == self.engine.bids[0].orders[0].time
+
+    def test_delete_an_order(self):
+        """Test deletion of an order"""
+        order = Order.Order("Joe", 20)
+        self.engine.add_order(order, "BUY")
+
+        assert len(self.engine.bids) == 1
+
+        self.engine.delete_order("Joe", 20, "BUY")
+
+        assert len(self.engine.bids) == 0
