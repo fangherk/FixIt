@@ -1,5 +1,5 @@
 # Fix It Game
-This game simulates trading.
+This game simulates trading. It is a learning project to set up some basic components for students to mock what a sample exchange could look like.
 
 ## Setup
 
@@ -12,4 +12,4 @@ Run `pytest` in root folder.
 ## Next steps
 
 ### Sources
-Reference Chapter 9 at [here](http://isomorphisms.sdf.org/maxdama.pdf).
+Credits to Max Dama's reference "On Automated Trading" Chapter 9.
