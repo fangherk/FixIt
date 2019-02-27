@@ -1,0 +1,14 @@
+.Stats {
+  width: 25%;
+  position: absolute;
+  top:1%;
+  right:1%;
+}
+.stat-name {
+  width:50%;
+  text-align:right;
+}
+.stat-value {
+  width:50%;
+  text-align: left;
+}

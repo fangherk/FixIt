@@ -1,0 +1,19 @@
+.Card-middle {
+  padding:10px;
+  display: inline-block;
+}
+
+.Card-mine {
+  display: inline-block;
+}
+
+.Card-middle-img {
+  width:150px;
+  height:225px;
+
+}
+
+.Card-mine-img {
+  width:200px;
+  height:300px;
+}

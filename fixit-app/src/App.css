@@ -1,0 +1,25 @@
+@font-face {font-family: Ambroise; src: url('/Documents/BIGGERING%20UP/FixIt/fixit-app/src/assets/fonts/Ambroise-Regular.ttf')}
+* {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.App {
+  width:100%;
+  height:100%;
+  overflow: hidden;
+  position: absolute;
+  align-self: center;
+
+  display: flex;
+  justify-content: center;
+
+  background-color: #057254;
+
+
+
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

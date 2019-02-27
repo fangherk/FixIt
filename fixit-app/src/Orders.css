@@ -1,0 +1,106 @@
+.Orders {
+  width: 25%;
+  right: 1%;
+  top:15%;
+  position: absolute;
+}
+
+.Option {
+  width:100%;
+  height:60px;
+  display:flex;
+}
+
+.order-form {
+  width:80%;
+  height:100%;
+}
+
+input {
+  height:100%;
+  width:125%;
+  font-size:20px;
+  color:transparent;
+  background-color: inherit;
+  text-shadow: 0 0 0 #222326;
+  text-align: left;
+  border:none;
+  letter-spacing:1px;
+  border-bottom:4px solid #222326;
+
+}
+
+::placeholder {
+  color: #222326;
+}
+.order-button {
+  height:65%;
+  width:18%;
+  align-self:center;
+
+}
+
+.order-button-btn {
+  width:100%;
+  height:100%;
+  background-color: rgb(178, 30, 16);
+
+  color:white;
+  font-weight:bold;
+  font-size:13px;
+
+  outline:none;
+  border:none;
+  border-radius:3px;
+
+  cursor: pointer;
+
+}
+
+.order-button-btn:hover {
+  background-color: rgb(122, 21, 12)
+
+}
+
+
+.Column {
+  width:49.5%;
+  height:90%;
+  display: inline-block;
+  justify-content: center;
+}
+
+.order-label {
+  height:5%;
+  width:100%;
+  text-align:center;
+  vertical-align: center;
+  margin-top:5%;
+  font-size: 17px;
+  border-bottom:4px solid #222326;
+  font-weight:bold;
+  color: #fcfcfc;
+}
+
+.right {
+  border-right:2px solid #222326;
+  backgroud-color:blue;
+
+}
+
+.left {
+  border-left:2px solid #222326;
+
+}
+.last {
+  background-color: rgb(230, 232, 237);
+  border-radius:3px;
+
+}
+
+input:focus {
+  outline:none;
+}
+table{
+  width:100%;
+}

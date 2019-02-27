@@ -1,0 +1,19 @@
+.bestDeals{
+  width:40%;
+  height:10%;
+  background-color: rgb(247, 247, 247);
+  border-bottom: 6px solid #222326;
+  border-right: 6px solid #222326;
+  border-left: 6px solid #222326;
+  border-radius: 5px;
+}
+
+.bestDeals-label {
+  font-size: 26px;
+
+}
+
+.bestDeals-value {
+  font-size: 24px;
+  text-align: center;
+}

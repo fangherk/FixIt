@@ -1,0 +1,10 @@
+.order-cell {
+  text-align: center;
+  width:100%;
+  color:#fcfcfc;
+  font-size:21px;
+}
+
+.order-cell:hover {
+  background-color: #036047;
+}
