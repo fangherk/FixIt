@@ -19,6 +19,17 @@ class FixItGame:
         self.engine = MatchingEngine()
         self.accounting = AccountingBook()
 
+    def new_game(self):
+        """Start a new game"""
+        try:
+            num_players = 3  #int(input("How many players are there?\t"))
+        except:
+            raise ValueError("Invalid number of players")
+        else:
+            players = [str(x) for x in list(range(1, int(num_players) + 1))]
+
+        self.set_up_game(players)
+
     def set_up_game(self, players):
         """Intialize game with players and middle cards"""
         print("\n\nShuffling Deck of {} cards".format(len(self.deck)))
