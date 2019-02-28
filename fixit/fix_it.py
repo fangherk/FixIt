@@ -27,7 +27,7 @@ class FixItGame:
         print("Adding players to game\n\n\n")
 
         for name in players:
-            draw_card = self.deck.pop()
+            draw_card = str(self.deck.pop())
             new_player = Player(name, draw_card)
             self.accounting.add_player(new_player)
 
@@ -40,22 +40,14 @@ class FixItGame:
         for _, val in self.accounting.players.items():
             print(val)
 
-    def delete_order(self, person):
+    def delete_order(self, person, price, order_type):
         """ Delete an order """
-        try:
-            type = int(input("Press 1 for bid. Press 2 for offer\n"))
-            price = int(input("What was the price of the order?\n"))
+        self.engine.delete_order(person, price, order_type)
+        self.accounting.players[person].delete_order(price, order_type)
 
-        except:
-            raise ValueError("Wrong Type or Price input")
-        else:
-            if type == 1:
-                self.engine.delete_order(person, int(price), "BUY")
-            else:
-                self.engine.delete_order(person, int(price), "SELL")
-
-    def add_order(self, person, order, order_type):
-        """ Delete an order """
+    def add_order(self, person, price, order_type):
+        """ Add an order """
+        order = Order(person, price, 1)
         self.engine.add_order(order, order_type)
         self.accounting.players[person].add_order(order, order_type)
 
@@ -86,13 +78,22 @@ class FixItGame:
                         print("Try Again.")
                         continue
                     else:
-                        order = Order(person, price, 1)
                         if buyer == 1:
-                            self.add_order(person, order, "BUY")
+                            self.add_order(person, price, "BUY")
                         if buyer == 2:
                             self.add_order(person, order, "SELL")
                 elif buyer == 3:
-                    self.delete_order(person)
+                    try:
+                        type = int(input("Press 1 for bid. Press 2 for offer\n"))
+                        price = int(input("What was the price of the order?\n"))
+
+                    except:
+                        raise ValueError("Wrong Type or Price input")
+                    else:
+                        if type == 1:
+                            self.delete_order(person, price, "BUY")
+                        else:
+                            self.delete_order(person, price, "SELL")
                 else:
                     raise ValueError("Invalid Integer")
 
@@ -113,7 +114,6 @@ class FixItGame:
         print("End Game.\n\n\n")
         self.accounting.scoring(self.middle)
 
-
 def simulate_game():
     """Function to start the game"""
     game = FixItGame()
@@ -130,7 +130,5 @@ def simulate_game():
         game.play()
     else:
         print("No game.")
-
-
 if __name__ == "__main__":
     simulate_game()

@@ -15,3 +15,11 @@ class Order:
     def __str__(self):
         return "Name:{}-Price:{}-Qty:{}-Time:{}".format(
             self.name, self.price, self.quantity, self.time)
+    def to_dict(self):
+        out = {
+        "name":self.name,
+        "price":self.price,
+        "quantity":self.quantity,
+        "time":self.time.strftime("%B %d, %Y")
+        }
+        return out

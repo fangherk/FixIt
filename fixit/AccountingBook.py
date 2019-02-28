@@ -36,7 +36,7 @@ class AccountingBook:
         player_cards = 0
         winner, winner_profit = None, None
         for player_id, player in self.players.items():
-            player_cards += player.card
+            player_cards += int(player.card)
             total_value = sum(middle) + player_cards
 
         for player_id, player in self.players.items():
