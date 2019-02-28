@@ -2,6 +2,8 @@ from collections import namedtuple
 
 
 class AccountingBook:
+    """Class to manage the orders, trades, and profits of players"""
+
     def __init__(self):
         self.players = {}
 

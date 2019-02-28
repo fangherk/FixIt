@@ -3,6 +3,8 @@ from collections import namedtuple
 
 
 class Level:
+    """Class to contain all orders of type that have a certain price"""
+
     def __init__(self, orders, price, time):
         self.orders = orders
         self.price = price
@@ -22,6 +24,8 @@ class Level:
 
 
 class MatchingEngine:
+    """Class to match orders made by players"""
+
     def __init__(self):
         self.bids = []
         self.offers = []
@@ -45,10 +49,10 @@ class MatchingEngine:
     def clean_level(self):
         """Get rid of levels with no orders in them"""
         if self.bids:
-            if len(self.bids[-1].orders) == 0:
+            if not self.bids[-1].orders:
                 self.bids.pop(-1)
         if self.offers:
-            if len(self.offers[0].orders) == 0:
+            if not self.offers[0].orders:
                 self.offers.pop(0)
 
     def delete_order(self, name, value, order_type="BUY"):
@@ -64,7 +68,7 @@ class MatchingEngine:
                 current_level.orders.pop(i)
                 break
 
-        current_level.update_time
+        current_level.update_time()
         self.clean_level()
 
     def balance_orders(self):
@@ -75,7 +79,6 @@ class MatchingEngine:
         highest_bid, lowest_offer = self.bids[-1], self.offers[0]
         Trade = namedtuple("Trade", "seller buyer score")
         trade = None
-        order_made = None
         if lowest_offer.price <= highest_bid.price:
 
             bid_time, offer_time = highest_bid.time, lowest_offer.time

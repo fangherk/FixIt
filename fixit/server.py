@@ -1,12 +1,14 @@
-from flask import Flask, request
-from fixit.fix_it import FixItGame
 import json
+
+from flask import Flask, request
+
+from fixit.fix_it import FixItGame
 
 app = Flask(__name__)
 game = FixItGame()
 
 try:
-    num_players = 3 #int(input("How many players are there?\t"))
+    num_players = 3  #int(input("How many players are there?\t"))
 except:
     raise ValueError("Invalid number of players")
 else:

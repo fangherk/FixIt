@@ -1,3 +1,5 @@
+"""Contains FixItGame class"""
+
 import random
 from collections import deque
 
@@ -8,6 +10,8 @@ from fixit.Player import Player
 
 
 class FixItGame:
+    """Object for playing fix it"""
+
     def __init__(self):
         self.deck = deque(list(range(1, 14)) * 4)
         self.rounds = 3
@@ -64,7 +68,7 @@ class FixItGame:
                         input(
                             "\nPress:\n0 - end turn\n1 - buy\n2 - sell\n3 - delete order\n"
                         ))
-                except:
+                except (SyntaxError, ValueError):
                     print("Please input an integer value")
                     continue
 
@@ -74,7 +78,7 @@ class FixItGame:
                     try:
                         person = int(input("What is your id?\n"))
                         price = int(input("What is the price of the share?\n"))
-                    except:
+                    except (SyntaxError, ValueError):
                         print("Try Again.")
                         continue
                     else:
@@ -84,13 +88,15 @@ class FixItGame:
                             self.add_order(person, order, "SELL")
                 elif buyer == 3:
                     try:
-                        type = int(input("Press 1 for bid. Press 2 for offer\n"))
-                        price = int(input("What was the price of the order?\n"))
+                        order_type = int(
+                            input("Press 1 for bid. Press 2 for offer\n"))
+                        price = int(
+                            input("What was the price of the order?\n"))
 
                     except:
                         raise ValueError("Wrong Type or Price input")
                     else:
-                        if type == 1:
+                        if order_type == 1:
                             self.delete_order(person, price, "BUY")
                         else:
                             self.delete_order(person, price, "SELL")
@@ -114,6 +120,7 @@ class FixItGame:
         print("End Game.\n\n\n")
         self.accounting.scoring(self.middle)
 
+
 def simulate_game():
     """Function to start the game"""
     game = FixItGame()
@@ -130,5 +137,7 @@ def simulate_game():
         game.play()
     else:
         print("No game.")
+
+
 if __name__ == "__main__":
     simulate_game()

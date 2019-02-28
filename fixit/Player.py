@@ -6,20 +6,22 @@ class Player():
         self.bids = []
         self.offers = []
 
-
-    def list_objects_to_dict(L):
+    def list_objects_to_dict(objects=[]):
+        """Takes of a list of objects and converts it to a json {key:value} = id: {object's json} pair"""
         out = {}
-        for i in range(len(L)):
-            out[str(i)] = L[i].to_dict()
+        for i in range(len(objects)):
+            out[str(i)] = objects[i].to_dict()
         return out
 
     def to_dict(self):
+        """returns json dictionary for the players properties"""
         out = {
-        "name":self.name,
-        "card":self.card,
-        "history":list(map(lambda x: [x[0], x[1], x[2]], self.history)),
-        "bids":Player.list_objects_to_dict(self.bids),
-        "offers":Player.list_objects_to_dict(self.offers)}
+            "name": self.name,
+            "card": self.card,
+            "history": list(map(lambda x: [x[0], x[1], x[2]], self.history)),
+            "bids": Player.list_objects_to_dict(self.bids),
+            "offers": Player.list_objects_to_dict(self.offers)
+        }
 
         return out
 
@@ -37,7 +39,7 @@ class Player():
         """Deletes bid or offer by player"""
         book = self.bids if order_type == "BUY" else self.offers
 
-        for i in range(len(book) -1, -1, -1):
+        for i in range(len(book) - 1, -1, -1):
             current_order = book[i]
             if current_order.price == price:
                 book.pop(i)
