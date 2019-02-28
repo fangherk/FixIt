@@ -64,7 +64,12 @@ class FixItGame:
         """ Add an order """
         order = Order(person, price, 1)
         self.engine.add_order(order, order_type)
-        self.accounting.players[person].add_order(order, order_type)
+        trade = self.engine.balance_orders()
+        if trade:
+            print("here}")
+            self.accounting.balance_player_orders(trade)
+        else:
+            self.accounting.players[person].add_order(order, order_type)
 
     def play(self):
         """Game loop"""

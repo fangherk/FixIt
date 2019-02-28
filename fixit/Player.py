@@ -19,8 +19,8 @@ class Player():
             "name": self.name,
             "card": self.card,
             "history": list(map(lambda x: [x[0], x[1], x[2]], self.history)),
-            "bids": Player.list_objects_to_dict(self.bids),
-            "offers": Player.list_objects_to_dict(self.offers)
+            "bids": list(map(lambda x: x.price, self.bids)),
+            "offers": list(map(lambda x: x.price, self.offers)),
         }
 
         return out

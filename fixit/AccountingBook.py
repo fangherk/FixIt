@@ -15,10 +15,14 @@ class AccountingBook:
         """Adds trade to each relevant player's history"""
 
         Score = namedtuple("Score", "pot_value num_shares party")
-        self.players[trade.buyer].add_trade(
-            Score(trade.score, 1, trade.seller))
-        self.players[trade.seller].add_trade(
-            Score(trade.score, -1, trade.buyer))
+        buyer = self.players[trade.buyer]
+        seller = self.players[trade.seller]
+
+        buyer.add_trade(Score(trade.score, 1, trade.seller))
+        buyer.delete_order(trade.score, order_type="BUY")
+        seller.add_trade(Score(trade.score, -1, trade.buyer))
+        seller.delete_order(trade.score, order_type="SELL")
+
         #Trade = namedtuple("Trade", "seller buyer score")
         # seller = self.players[trade.seller]
         # buyer = self.players[trade.buyer]
