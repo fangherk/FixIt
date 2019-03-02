@@ -2,6 +2,7 @@
 
 import random
 from collections import deque
+from random import choice
 
 from AccountingBook import AccountingBook
 from MatchingEngine import MatchingEngine
@@ -19,14 +20,19 @@ class FixItGame:
         self.engine = MatchingEngine()
         self.accounting = AccountingBook()
 
-    def new_game(self):
+    def new_game(self, players=None):
         """Start a new game"""
-        try:
-            num_players = 3  #int(input("How many players are there?\t"))
-        except:
-            raise ValueError("Invalid number of players")
-        else:
-            players = [str(x) for x in list(range(1, int(num_players) + 1))]
+
+        if not players:
+            try:
+                num_players = 3  #int(input("How many players are there?\t"))
+            except:
+                raise ValueError("Invalid number of players")
+            else:
+                players = [
+                    str(x) for x in list(range(1,
+                                               int(num_players) + 1))
+                ]
 
         self.set_up_game(players)
 
@@ -42,7 +48,9 @@ class FixItGame:
         print("Adding players to game\n\n\n")
 
         for name in players:
-            draw_card = str(self.deck.pop())
+            draw_card = str(self.deck.pop()) + choice([
+                "D", "S", "H", "C"
+            ])  # simulate the card having a certain suite until
             new_player = Player(name, draw_card)
             self.accounting.add_player(new_player)
 
