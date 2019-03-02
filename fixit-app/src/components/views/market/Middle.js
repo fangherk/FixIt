@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from './Card';
-import './Middle.css';
+import './stylesheets/Middle.css';
 
 export default class Middle extends React.Component {
   renderCard(value, suite, isShown = "YES") {

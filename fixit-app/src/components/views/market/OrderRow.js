@@ -1,5 +1,5 @@
 import React from 'react';
-import './OrderRow.css';
+import './stylesheets/OrderRow.css';
 
 export default class OrderRow extends React.Component {
   constructor(props) {

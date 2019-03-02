@@ -1,5 +1,5 @@
 import React from 'react';
-import './BestDeals.css';
+import './stylesheets/BestDeals.css';
 
 
 export default class BestDeals extends React.Component {

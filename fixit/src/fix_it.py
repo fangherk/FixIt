@@ -3,10 +3,10 @@
 import random
 from collections import deque
 
-from fixit.AccountingBook import AccountingBook
-from fixit.MatchingEngine import MatchingEngine
-from fixit.Order import Order
-from fixit.Player import Player
+from AccountingBook import AccountingBook
+from MatchingEngine import MatchingEngine
+from Order import Order
+from Player import Player
 
 
 class FixItGame:

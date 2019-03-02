@@ -2,7 +2,7 @@ import json
 
 from flask import Flask, Response, jsonify, request
 
-from fixit.fix_it import FixItGame
+from fix_it import FixItGame
 
 app = Flask(__name__)
 

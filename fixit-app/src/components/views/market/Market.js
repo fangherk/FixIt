@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import Middle from './Middle';
 import MyHand from './MyHand';
 import Orders from './Orders';
@@ -6,9 +7,9 @@ import Stats from './Stats';
 import BestDeals from './BestDeals';
 import Timer from './Timer';
 import AccountingBook from './AccountingBook';
-import './App.css';
+import './stylesheets/Market.css';
 
-class App extends Component {
+export default class Market extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -24,6 +25,7 @@ class App extends Component {
     this.deleteOrder = ((value, type) => {this.modifyOrders(value, type, "DELETE")})
     this.nextRound = this.nextRound.bind(this);
 
+    this.name = ""
     this.getInitialData()
 
   }
@@ -35,7 +37,7 @@ class App extends Component {
 
   getInitialData() {
     let self = this
-    fetch('http://127.0.0.1:5000/orders/1').then(function(response) {
+    fetch('http://127.0.0.1:8000/orders/1').then(function(response) {
       response.json().then(json => {
         self.setState({bids:json['bids']})
         self.setState({offers:json['offers']})
@@ -43,15 +45,15 @@ class App extends Component {
     })
   }
 
-  count(obj) { return Object.keys(obj).length; }
+count(obj) { return Object.keys(obj).length; }
 
-  modifyOrders(value, type, task) {
-    //TODO Send to backend and refresh state (order could be made)
-    let self = this
+modifyOrders(value, type, task) {
+  //TODO Send to backend and refresh state (order could be made)
+  let self = this
 
-    fetch('http://127.0.0.1:5000/orders/1', {
-      method:'PUT',
-      headers: {
+  fetch('http://127.0.0.1:8000/orders/1', {
+    method:'PUT',
+    headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
@@ -82,6 +84,5 @@ class App extends Component {
       </div>
     );
   }
-}
 
-export default App;
+}
