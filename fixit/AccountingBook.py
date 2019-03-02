@@ -2,6 +2,8 @@ from collections import namedtuple
 
 
 class AccountingBook:
+    """Class to manage the orders, trades, and profits of players"""
+
     def __init__(self):
         self.players = {}
 
@@ -13,10 +15,14 @@ class AccountingBook:
         """Adds trade to each relevant player's history"""
 
         Score = namedtuple("Score", "pot_value num_shares party")
-        self.players[trade.buyer].add_trade(
-            Score(trade.score, 1, trade.seller))
-        self.players[trade.seller].add_trade(
-            Score(trade.score, -1, trade.buyer))
+        buyer = self.players[trade.buyer]
+        seller = self.players[trade.seller]
+
+        buyer.add_trade(Score(trade.score, 1, trade.seller))
+        buyer.delete_order(trade.score, order_type="BUY")
+        seller.add_trade(Score(trade.score, -1, trade.buyer))
+        seller.delete_order(trade.score, order_type="SELL")
+
         #Trade = namedtuple("Trade", "seller buyer score")
         # seller = self.players[trade.seller]
         # buyer = self.players[trade.buyer]
@@ -36,7 +42,7 @@ class AccountingBook:
         player_cards = 0
         winner, winner_profit = None, None
         for player_id, player in self.players.items():
-            player_cards += player.card
+            player_cards += int(player.card)
             total_value = sum(middle) + player_cards
 
         for player_id, player in self.players.items():

@@ -1,3 +1,5 @@
+"""Contains FixItGame class"""
+
 import random
 from collections import deque
 
@@ -8,12 +10,25 @@ from fixit.Player import Player
 
 
 class FixItGame:
+    """Object for playing fix it"""
+
     def __init__(self):
         self.deck = deque(list(range(1, 14)) * 4)
         self.rounds = 3
         self.middle = []
         self.engine = MatchingEngine()
         self.accounting = AccountingBook()
+
+    def new_game(self):
+        """Start a new game"""
+        try:
+            num_players = 3  #int(input("How many players are there?\t"))
+        except:
+            raise ValueError("Invalid number of players")
+        else:
+            players = [str(x) for x in list(range(1, int(num_players) + 1))]
+
+        self.set_up_game(players)
 
     def set_up_game(self, players):
         """Intialize game with players and middle cards"""
@@ -27,7 +42,7 @@ class FixItGame:
         print("Adding players to game\n\n\n")
 
         for name in players:
-            draw_card = self.deck.pop()
+            draw_card = str(self.deck.pop())
             new_player = Player(name, draw_card)
             self.accounting.add_player(new_player)
 
@@ -40,24 +55,21 @@ class FixItGame:
         for _, val in self.accounting.players.items():
             print(val)
 
-    def delete_order(self, person):
+    def delete_order(self, person, price, order_type):
         """ Delete an order """
-        try:
-            type = int(input("Press 1 for bid. Press 2 for offer\n"))
-            price = int(input("What was the price of the order?\n"))
+        self.engine.delete_order(person, price, order_type)
+        self.accounting.players[person].delete_order(price, order_type)
 
-        except:
-            raise ValueError("Wrong Type or Price input")
-        else:
-            if type == 1:
-                self.engine.delete_order(person, int(price), "BUY")
-            else:
-                self.engine.delete_order(person, int(price), "SELL")
-
-    def add_order(self, person, order, order_type):
-        """ Delete an order """
+    def add_order(self, person, price, order_type):
+        """ Add an order """
+        order = Order(person, price, 1)
         self.engine.add_order(order, order_type)
-        self.accounting.players[person].add_order(order, order_type)
+        trade = self.engine.balance_orders()
+        if trade:
+            print("here}")
+            self.accounting.balance_player_orders(trade)
+        else:
+            self.accounting.players[person].add_order(order, order_type)
 
     def play(self):
         """Game loop"""
@@ -72,7 +84,7 @@ class FixItGame:
                         input(
                             "\nPress:\n0 - end turn\n1 - buy\n2 - sell\n3 - delete order\n"
                         ))
-                except:
+                except (SyntaxError, ValueError):
                     print("Please input an integer value")
                     continue
 
@@ -82,17 +94,28 @@ class FixItGame:
                     try:
                         person = int(input("What is your id?\n"))
                         price = int(input("What is the price of the share?\n"))
-                    except:
+                    except (SyntaxError, ValueError):
                         print("Try Again.")
                         continue
                     else:
-                        order = Order(person, price, 1)
                         if buyer == 1:
-                            self.add_order(person, order, "BUY")
+                            self.add_order(person, price, "BUY")
                         if buyer == 2:
                             self.add_order(person, order, "SELL")
                 elif buyer == 3:
-                    self.delete_order(person)
+                    try:
+                        order_type = int(
+                            input("Press 1 for bid. Press 2 for offer\n"))
+                        price = int(
+                            input("What was the price of the order?\n"))
+
+                    except:
+                        raise ValueError("Wrong Type or Price input")
+                    else:
+                        if order_type == 1:
+                            self.delete_order(person, price, "BUY")
+                        else:
+                            self.delete_order(person, price, "SELL")
                 else:
                     raise ValueError("Invalid Integer")
 

@@ -20,9 +20,12 @@ class App extends Component {
       bestBid:"46"
     }
 
-    this.addOrder = this.addOrder.bind(this);
-    this.deleteOrder = this.deleteOrder.bind(this);
+    this.addOrder = ((value, type) => {this.modifyOrders(value, type, "ADD")})
+    this.deleteOrder = ((value, type) => {this.modifyOrders(value, type, "DELETE")})
     this.nextRound = this.nextRound.bind(this);
+
+    this.getInitialData()
+
   }
 
   getMyCard() {
@@ -30,35 +33,36 @@ class App extends Component {
       return ["QD"]
   }
 
-  addOrder(value, type) {
-    //TODO Send to backend and refresh state (order could be made)
-    let book = [];
-    if (type === "BUY") {
-      book = this.state.bids
-      book.push(value)
-      this.setState({bids:book})
-    } else {
-      book = this.state.offers
-      book.push(value)
-      this.setState({offers:book})
-    }
-
+  getInitialData() {
+    let self = this
+    fetch('http://127.0.0.1:5000/orders/1').then(function(response) {
+      response.json().then(json => {
+        self.setState({bids:json['bids']})
+        self.setState({offers:json['offers']})
+      })
+    })
   }
 
-  deleteOrder(value, type) {
-    //TODO Send to backend that order is deleted
-    let book = [];
-    if (type === "BUY") {
-      book = this.state.bids;
-      let del_ind = book.indexOf(value);
-      book.splice(del_ind, 1);
-      this.setState({bids:book})
-    } else {
-      book = this.state.offers;
-      let del_ind = book.indexOf(value);
-      book.splice(del_ind, 1);
-      this.setState({offers:book})
-    }
+  count(obj) { return Object.keys(obj).length; }
+
+  modifyOrders(value, type, task) {
+    //TODO Send to backend and refresh state (order could be made)
+    let self = this
+
+    fetch('http://127.0.0.1:5000/orders/1', {
+      method:'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({"value":value,"type":type,"task":task})
+    }).then(function(response) {
+      response.json().then(json => {
+        self.setState({bids:json['bids']})
+        self.setState({offers:json['offers']})
+      })
+    })
   }
 
   nextRound() {

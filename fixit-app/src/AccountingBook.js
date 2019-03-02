@@ -11,7 +11,7 @@ export default class AccountingBook extends React.Component {
   createTransactionEntries = (t) => {
     const rows = []
     for (let i=0; i < t.length; i++) {
-      rows.push(<tr className="order-cell"> {t[i]} </tr>)
+      rows.push(<tr key={i} className="order-cell"><td>{t[i]}</td></tr>)
     }
     return rows
 
@@ -20,11 +20,13 @@ export default class AccountingBook extends React.Component {
     const columns = this.state.players.map(c =>  (
       <div className="Column">
         <div className="order-label"><b>{c.playerName}</b></div>
-            <table className="left">
-              {this.createTransactionEntries(c.transactions)}
-          </table>
-        </div> )
-      );
+        <table className="left">
+          <tbody>
+            {this.createTransactionEntries(c.transactions)}
+          </tbody>
+        </table>
+      </div> )
+    );
     return columns
   }
   render() {
@@ -32,9 +34,9 @@ export default class AccountingBook extends React.Component {
     return (
     <div className = 'AccountingBook'>
     <div className='title' style = {{fontWeight:'bold', fontSize:25}} >
-          <p>  Accounting Book</p>
+          <p>Accounting Book</p>
     </div>
-    <div class="row">
+    <div className="row">
       {this.createTableColumn()}
       </div>
     </div>

@@ -2,7 +2,12 @@
   "name": "fixit-app",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "npm": "6.7.0",
+    "node": "11.10.0"
+  },
   "dependencies": {
+    "cors": "^2.8.5",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "react-scripts": "2.1.5"
