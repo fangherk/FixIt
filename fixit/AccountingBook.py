@@ -20,22 +20,9 @@ class AccountingBook:
 
         buyer.add_trade(Score(trade.score, 1, trade.seller))
         buyer.delete_order(trade.score, order_type="BUY")
+
         seller.add_trade(Score(trade.score, -1, trade.buyer))
         seller.delete_order(trade.score, order_type="SELL")
-
-        #Trade = namedtuple("Trade", "seller buyer score")
-        # seller = self.players[trade.seller]
-        # buyer = self.players[trade.buyer]
-        # for i in range(len(seller.offers)):
-        #     order = seller.offers[i]
-        #     if order.price == trade.score:
-        #         seller.offers.pop(i)
-        #         break
-        # for i in range(len(buyer.offers)):
-        #     order = buyer.offers[i]
-        #     if order.price == trade.score:
-        #         buyer.offers.pop(i)
-        #         break
 
     def scoring(self, middle):
         """Gives the winner player and shows profits made by all players"""

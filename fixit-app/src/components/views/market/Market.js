@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import Middle from './Middle';
 import MyHand from './MyHand';
 import Orders from './Orders';
-import Stats from './Stats';
 import BestDeals from './BestDeals';
 import Timer from './Timer';
 import AccountingBook from './AccountingBook';
@@ -20,13 +19,14 @@ export default class Market extends Component {
       bestOffer:"46",
       bestBid:"46"
     }
+    this.name = this.props.location.state['name']
 
     this.addOrder = ((value, type) => {this.modifyOrders(value, type, "ADD")})
     this.deleteOrder = ((value, type) => {this.modifyOrders(value, type, "DELETE")})
     this.nextRound = this.nextRound.bind(this);
 
-    this.name = ""
-    this.getInitialData()
+    this.getMarketData()
+    this.marketUpdates = setInterval(this.getMarketData.bind(this), 500)
 
   }
 
@@ -35,9 +35,9 @@ export default class Market extends Component {
       return ["QD"]
   }
 
-  getInitialData() {
+  getMarketData() {
     let self = this
-    fetch('http://127.0.0.1:8000/orders/1').then(function(response) {
+    fetch('http://127.0.0.1:8000/orders/' + this.name).then(function(response) {
       response.json().then(json => {
         self.setState({bids:json['bids']})
         self.setState({offers:json['offers']})
@@ -51,7 +51,7 @@ modifyOrders(value, type, task) {
   //TODO Send to backend and refresh state (order could be made)
   let self = this
 
-  fetch('http://127.0.0.1:8000/orders/1', {
+  fetch('http://127.0.0.1:8000/orders/' + this.name, {
     method:'PUT',
     headers: {
         'Accept': 'application/json',
@@ -73,7 +73,7 @@ modifyOrders(value, type, task) {
 
   render() {
     return (
-      <div className="App">
+      <div className="Market">
         <Middle cards={this.state.middle}/>
         <MyHand cards={this.getMyCard()}/>
         <Orders bids={this.state.bids} offers={this.state.offers} onSubmit={this.addOrder} onDelete={this.deleteOrder}/>

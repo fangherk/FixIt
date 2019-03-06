@@ -12,51 +12,39 @@ app = Flask(__name__)
 game = FixItGame()
 lobby = Lobby()
 
+
 ### Handle things in the lobby ###
-
-
 @app.route('/lobby/ready')
 def is_ready():
     """triggered when a player is ready to go into the game"""
     lobby.num_ready += 1
     if lobby.players and lobby.num_ready == len(lobby.players):
+        lobby.ready = True
         lobby.start_game(game)
 
     return get_lobby()
 
 
-@app.route('/lobby/leave', methods=["GET", "PUT"])
-def delete_player_lobby():
-    """takes player out of lobby"""
-    if request.method == "PUT":
-        data = request.get_json()
-        name = data['name']
-
-        lobby.delete(name)
-        lobby.last_deleted = name
-
-    return get_lobby()
-
-
-@app.route('/lobby/join', methods=["GET", "PUT"])
-def add_player_lobby():
-    """Adds a player to the lobby"""
-    if request.method == "PUT":
-        data = request.get_json()
-        name = data['name']
-        ip = data['ip']
-
-        lobby.add(name, ip)
-        lobby.last_added = name
-
-    return get_lobby()
-
-
-@app.route('/lobby')
+@app.route('/lobby', methods=["GET", "PUT"])
 def get_lobby():
     "Get all the players currently in the lobby"
+    if request.method == "PUT":
+        data = request.get_json()
+        name = data['name']
+        task = request.args.get('task')
+        if task == "join":
+            ip = "5"
+            lobby.add(name, ip)
+            lobby.last_added = name
+        elif task == "leave":
+            lobby.delete(name)
+            lobby.last_deleted = name
+
     response = app.response_class(
-        response=json.dumps(lobby.players_names),
+        response=json.dumps({
+            'players': lobby.players_names,
+            'ready': lobby.ready
+        }),
         status=200,
         mimetype='application/json')
     response.headers['Access-Control-Allow-Origin'] = '*'
@@ -64,8 +52,6 @@ def get_lobby():
 
 
 ### Handle orders made within the game ###
-
-
 @app.route('/orders/<player>', methods=["GET", "PUT"])
 def modify_orders(player):
     """Either adds or deletes an order for a certain player"""
@@ -84,6 +70,7 @@ def modify_orders(player):
         response=json.dumps(game.accounting.players[player].to_dict()),
         status=200,
         mimetype='application/json')
+
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
 

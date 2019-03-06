@@ -38,12 +38,21 @@ class Player():
     def delete_order(self, price, order_type="BUY"):
         """Deletes bid or offer by player"""
         book = self.bids if order_type == "BUY" else self.offers
-
+        best = None
         for i in range(len(book) - 1, -1, -1):
             current_order = book[i]
+            if i == len(book) - 1:
+                best = current_order.price
+
             if current_order.price == price:
                 book.pop(i)
-                break
+                return
+
+            if order_type == "BUY":
+                best = max(best, current_order.price)
+            else:
+                best = min(best, current_order.price)
+        self.delete_order(best, order_type)
 
     def show_orders(self):
         """Represents a players bids and offers in a table"""

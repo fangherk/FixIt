@@ -7,6 +7,7 @@ class Lobby:
         self.last_added = ""
         self.last_dropped = ""
         self.num_ready = 0
+        self.ready = False
 
     def delete(self, name):
         """Deletes a player from the lobby"""

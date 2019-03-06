@@ -79,8 +79,8 @@ class MatchingEngine:
         highest_bid, lowest_offer = self.bids[-1], self.offers[0]
         Trade = namedtuple("Trade", "seller buyer score")
         trade = None
+        ordering = None
         if lowest_offer.price <= highest_bid.price:
-
             bid_time, offer_time = highest_bid.time, lowest_offer.time
             num_offers, num_bids = len(highest_bid.orders), len(
                 lowest_offer.orders)
@@ -89,11 +89,13 @@ class MatchingEngine:
                 trade_price = highest_bid.price
                 num_orders = num_offers
                 trans2, trans1 = lowest_offer, highest_bid
+                ordering = "SELL"
             else:
                 order = highest_bid.orders[0]
                 trade_price = lowest_offer.price
                 num_orders = num_bids
                 trans2, trans1 = highest_bid, lowest_offer
+                ordering = "BUY"
 
             count = 0
             while count < num_orders:
@@ -109,9 +111,15 @@ class MatchingEngine:
                     trans1.update_time()
                     trans2.update_time()
 
-                    trade = Trade(order.name, matching_order.name, trade_price)
+                    if ordering == "SELL":
+                        trade = Trade(order.name, matching_order.name,
+                                      trade_price)
+                    else:
+                        trade = Trade(matching_order.name, order.name,
+                                      trade_price)
+
                     print("Order matched {} sold {} bought @ {}".format(
-                        order.name, matching_order.name, trade_price))
+                        trade.seller, trade.buyer, trade_price))
 
                     break
                 count += 1

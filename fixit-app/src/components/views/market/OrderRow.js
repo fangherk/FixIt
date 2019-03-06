@@ -42,7 +42,6 @@ export default class OrderRow extends React.Component {
           value={this.props.value}
           className="order-cell"
           ref={node => this.node = node}>
-
         <td>{this.props.value}</td>
       </tr>
 

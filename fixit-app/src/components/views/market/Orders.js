@@ -14,6 +14,7 @@ export default class Orders extends React.Component {
     this.toggleType = this.toggleType.bind(this);
     this.deleteOrder = this.props.onDelete.bind(this);
   }
+
   createTable() {
     let bids = this.props.bids.sort(function(a, b){return b-a});
     let offers = this.props.offers.sort(function(a, b){return a-b});
@@ -70,9 +71,9 @@ export default class Orders extends React.Component {
       <div className="Orders">
         <div className="Option">
           <form className="order-form" onSubmit={this.handleOrder}>
-            <input type="number" placeholder="Place bid/offer" value={this.state.value} onChange={this.handleTextChange} />
+            <input className="order-input" type="number" placeholder="Place bid/offer" value={this.state.value} onChange={this.handleTextChange} />
           </form>
-          <a className="order-button"><button className="order-button-btn"onClick={this.toggleType}>{this.state.orderType}</button></a>
+          <a className="order-button"><button className="order-button-btn" onClick={this.toggleType}> {this.state.orderType}</button></a>
         </div>
         <div className="Column">
           <div className="order-label">Bids</div>

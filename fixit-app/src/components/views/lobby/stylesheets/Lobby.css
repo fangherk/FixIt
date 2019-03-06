@@ -1,1 +1,43 @@
+.Lobby {
+  width:50%;
+  align-self: center;
+}
 
+
+
+
+.addPlayer {
+  width:100%;
+  height:5%;
+}
+
+.name-form {
+  width:100%;
+  text-align:center;
+  border-bottom: 2px solid #222326;
+
+}
+
+.name-input {
+  font-size:30px;
+  color:transparent;
+  background-color: inherit;
+  text-shadow: 0 0 0 #222326;
+  text-align: center;
+  border:none;
+  letter-spacing:1px;
+
+
+}
+.lobby-row {
+  height:50px;
+  font-size:20px;
+  margin-left:10px;
+  border-bottom: 2px solid #222326;
+  ;
+
+}
+
+.lobby-row:hover {
+  background-color:rgb(230, 232, 237);
+}
