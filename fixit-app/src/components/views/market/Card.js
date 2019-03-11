@@ -7,7 +7,7 @@ export default class Card extends React.Component {
   render() {
     let card = `${this.props.value}${this.props.suite}`;
     let cardImg = require(`./assets/cards/${card}.png`);
-    if (this.props.shown === "NO") {
+    if (this.props.shown === false) {
       cardImg = require('./assets/cards/blue_back.png')
     }
 

@@ -3,7 +3,7 @@ import Card from './Card';
 import './stylesheets/Middle.css';
 
 export default class Middle extends React.Component {
-  renderCard(value, suite, isShown = "YES") {
+  renderCard(value, suite, isShown = true) {
     let value_suite = `${value}${suite}`;
     return (<Card status="middle" key={value_suite} value={value} suite={suite} shown={isShown}/>)
   }
@@ -11,11 +11,19 @@ export default class Middle extends React.Component {
   render() {
     let middle = this.props.cards
     let cardTable = []
+    const VAL_TO_SUIT = {"1":"A","11":"J", "12":"Q", "13":"K"}
     for (let i = 0; i < middle.length; i++) {
       let middleCard = middle[i]
-      let card = middleCard[0]
 
-      cardTable.push(this.renderCard(card[0], card[1], middleCard[1]))
+
+      let suite = middleCard[middleCard.length-1]
+      let value = middleCard.substring(0, middleCard.length-1)
+
+      if (value > 10 || value === 1) {
+        value = VAL_TO_SUIT[value]
+      }
+
+      cardTable.push(this.renderCard(value, suite, i < this.props.turn))
 
     }
 

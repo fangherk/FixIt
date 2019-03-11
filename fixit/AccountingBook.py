@@ -6,10 +6,29 @@ class AccountingBook:
 
     def __init__(self):
         self.players = {}
+        self.best_bid = None
+        self.best_offer = None
 
     def add_player(self, player):
         """Add player to list of players"""
         self.players[player.name] = player
+
+    def update_best_orders(self):
+        best_bid = None
+        best_offer = None
+        for player in self.players.values():
+            for trans in player.bids:
+                if not best_bid:
+                    best_bid = trans.price
+                else:
+                    best_bid = max(best_bid, trans.price)
+            for trans in player.offers:
+                if not best_offer:
+                    best_offer = trans.price
+                    best_offer = min(best_offer, trans.price)
+
+        self.best_bid = best_bid
+        self.best_offer = best_offer
 
     def balance_player_orders(self, trade):
         """Adds trade to each relevant player's history"""
@@ -29,8 +48,9 @@ class AccountingBook:
         player_cards = 0
         winner, winner_profit = None, None
         for player_id, player in self.players.items():
-            player_cards += int(player.card)
-            total_value = sum(middle) + player_cards
+            player_cards += int(player.card[:-1])
+            total_value = sum([int(card[:-1])
+                               for card in middle]) + player_cards
 
         for player_id, player in self.players.items():
             history = player.history

@@ -19,6 +19,7 @@ class FixItGame:
         self.middle = []
         self.engine = MatchingEngine()
         self.accounting = AccountingBook()
+        self.turn = 0
 
     def new_game(self, players=None):
         """Start a new game"""
@@ -40,17 +41,18 @@ class FixItGame:
         """Intialize game with players and middle cards"""
         print("\n\nShuffling Deck of {} cards".format(len(self.deck)))
         random.shuffle(self.deck)
+        SUITS = ["D", "S", "H", "C"]
 
         print("Draw Three Cards and put them in the middle")
         for _ in range(self.rounds):
-            self.middle.append(self.deck.pop())
+            middleCard = str(self.deck.pop()) + choice(
+                SUITS)  # simulate the card having a certain suite until
+            self.middle.append(middleCard)
 
         print("Adding players to game\n\n\n")
 
         for name in players:
-            draw_card = str(self.deck.pop()) + choice([
-                "D", "S", "H", "C"
-            ])  # simulate the card having a certain suite until
+            draw_card = str(self.deck.pop()) + choice(SUITS)
             new_player = Player(name, draw_card)
             self.accounting.add_player(new_player)
 
@@ -77,6 +79,7 @@ class FixItGame:
 
         if trade:
             self.accounting.balance_player_orders(trade)
+        self.accounting.update_best_orders()
 
     def play(self):
         """Game loop"""

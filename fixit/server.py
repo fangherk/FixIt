@@ -63,11 +63,14 @@ def modify_orders(player):
             game.add_order(player, int(value), order_type)
         elif task == "DELETE":
             game.delete_order(player, int(value), order_type)
-
     response = app.response_class(
         response=json.dumps({
             'accounting': game.accounting.transactions(),
-            'player': game.accounting.players[player].to_dict()
+            'player': game.accounting.players[player].to_dict(),
+            'middle': game.middle,
+            'turn': game.turn,
+            'bestBid': game.accounting.best_bid,
+            'bestOffer': game.accounting.best_offer
         }),
         status=200,
         mimetype='application/json')
