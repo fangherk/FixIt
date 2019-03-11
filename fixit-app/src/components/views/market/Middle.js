@@ -19,7 +19,7 @@ export default class Middle extends React.Component {
       let suite = middleCard[middleCard.length-1]
       let value = middleCard.substring(0, middleCard.length-1)
 
-      if (value > 10 || value === 1) {
+      if (value in VAL_TO_SUIT) {
         value = VAL_TO_SUIT[value]
       }
 

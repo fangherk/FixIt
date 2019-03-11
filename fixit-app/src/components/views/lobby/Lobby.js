@@ -60,7 +60,8 @@ export default class Lobby extends React.Component {
 
   addUserName(event) {
     /** Adds a user to the game **/
-    if (this.name !== '') {
+    let text = this.state.value.replace(/\s/g,'')
+    if (text.length === 0 || this.state.players.includes(text)) {
       event.preventDefault()
       return
     }
@@ -69,13 +70,13 @@ export default class Lobby extends React.Component {
     fetch('http://127.0.0.1:8000/lobby?task=join', {
       method:'PUT',
       headers:HEADERS,
-      body: JSON.stringify({'name':this.state.value})
+      body: JSON.stringify({'name':text})
     }).then(function(response) {
       response.json().then(json => {
         self.setState({players:json['players']})
       })
     })
-    this.name = this.state.value
+    this.name = text
     this.setState({value:''})
     event.preventDefault()
   }
