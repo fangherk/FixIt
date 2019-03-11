@@ -6,11 +6,11 @@ class Player():
         self.bids = []
         self.offers = []
 
-    def list_objects_to_dict(objects=[]):
+    def list_objects_to_dict(obs):
         """Takes of a list of objects and converts it to a json {key:value} = id: {object's json} pair"""
         out = {}
-        for i in range(len(objects)):
-            out[str(i)] = objects[i].to_dict()
+        for i in range(len(obs)):
+            out[str(i)] = obs[i].to_dict()
         return out
 
     def to_dict(self):
@@ -18,7 +18,7 @@ class Player():
         out = {
             "name": self.name,
             "card": self.card,
-            "history": list(map(lambda x: [x[0], x[1], x[2]], self.history)),
+            "history": [list(trans) for trans in self.history],
             "bids": list(map(lambda x: x.price, self.bids)),
             "offers": list(map(lambda x: x.price, self.offers)),
         }
@@ -27,7 +27,7 @@ class Player():
 
     def add_trade(self, trade):
         """Adds completed transaction to history of player"""
-        #Score = namedtuple("Score", "pot_value num_shares party")
+        #trade is a Score = namedtuple("Score", "pot_value num_shares party")
         self.history.append(trade)
 
     def add_order(self, order, order_type="BUY"):

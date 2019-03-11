@@ -12,35 +12,38 @@ export default class Market extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      stats:[["Stat 1","Data 1"], ["Stat 2", "Data2"], ["Stat 3", "Data 3"]],
       middle:[["QH", "YES"],["KH", "YES"],["JH","YES"]],
+      card:"3H",
       offers:[],
       bids:[],
       bestOffer:"46",
-      bestBid:"46"
+      bestBid:"46",
+      accounting:[]
     }
     this.name = this.props.location.state['name']
-
-    this.addOrder = ((value, type) => {this.modifyOrders(value, type, "ADD")})
-    this.deleteOrder = ((value, type) => {this.modifyOrders(value, type, "DELETE")})
-    this.nextRound = this.nextRound.bind(this);
 
     this.getMarketData()
     this.marketUpdates = setInterval(this.getMarketData.bind(this), 500)
 
+    this.addOrder = ((value, type) => {this.modifyOrders(value, type, "ADD")})
+    this.deleteOrder = ((value, type) => {this.modifyOrders(value, type, "DELETE")})
+    this.nextRound = this.nextRound.bind(this);
   }
 
-  getMyCard() {
-      //Back end to get a players hand of cards
-      return ["QD"]
+  setStateMod(state_key, state_value) {
+    if ((this.state[state_key] !== state_value) || (this.state[state_key].length !== state_value.length)) {
+      this.setState({[state_key]:state_value})
+    }
   }
 
   getMarketData() {
     let self = this
     fetch('http://127.0.0.1:8000/orders/' + this.name).then(function(response) {
       response.json().then(json => {
-        self.setState({bids:json['bids']})
-        self.setState({offers:json['offers']})
+        self.setStateMod('bids', json['player']['bids'])
+        self.setStateMod('offers', json['player']['offers'])
+        self.setStateMod('card', json['player']['card'])
+        self.setStateMod('accounting', json['accounting'])
       })
     })
   }
@@ -61,8 +64,8 @@ modifyOrders(value, type, task) {
       body: JSON.stringify({"value":value,"type":type,"task":task})
     }).then(function(response) {
       response.json().then(json => {
-        self.setState({bids:json['bids']})
-        self.setState({offers:json['offers']})
+        self.setState({bids:json['player']['bids']})
+        self.setState({offers:json['player']['offers']})
       })
     })
   }
@@ -75,12 +78,11 @@ modifyOrders(value, type, task) {
     return (
       <div className="Market">
         <Middle cards={this.state.middle}/>
-        <MyHand cards={this.getMyCard()}/>
+        <MyHand card="5H"/>
         <Orders bids={this.state.bids} offers={this.state.offers} onSubmit={this.addOrder} onDelete={this.deleteOrder}/>
-        {/* <Stats  stats={this.state.stats}/> */}
         <BestDeals bestBid={this.state.bestBid} bestOffer={this.state.bestOffer}/>
         <Timer onTimeUp={this.nextRound}/>
-        <AccountingBook />
+        <AccountingBook accounting={this.state.accounting}/>
       </div>
     );
   }

@@ -85,3 +85,17 @@ class AccountingBook:
 
     def __str__(self):
         return self.__repr__()
+
+    def transactions(self):
+        """
+        Return a dictionary where keys are players
+        and the values are arrays of transactions
+        """
+        return [{
+            'player':
+            playerName,
+            'transactions': [
+                -1 * int(trans.num_shares) * trans.pot_value
+                for trans in player.history
+            ]
+        } for playerName, player in self.players.items()]

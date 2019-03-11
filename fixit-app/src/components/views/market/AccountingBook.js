@@ -3,11 +3,6 @@ import './stylesheets/AccountingBook.css';
 
 
 export default class AccountingBook extends React.Component {
-  state = {
-    players:[
-      {playerName:'A', transactions:["+23", "-45"]}, {playerName:'B', transactions:[]}, {playerName:'C', transactions:["-30"]}, {playerName:'D', transactions:["+30"]}
-    ]
-  };
   createTransactionEntries = (t) => {
     let rows = []
     for (let i=0; i < t.length; i++) {
@@ -17,9 +12,9 @@ export default class AccountingBook extends React.Component {
 
   }
   createTableColumn = () => {
-    const columns = this.state.players.map(c =>  (
+    const columns = this.props.accounting.map(c =>  (
       <div className="Column" >
-        <div className="order-label"><b>{c.playerName}</b></div>
+        <div className="order-label"><b>{c.player}</b></div>
         <table className="left">
           <tbody>
             {this.createTransactionEntries(c.transactions)}

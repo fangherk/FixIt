@@ -35,10 +35,8 @@ def get_lobby():
         if task == "join":
             ip = "5"
             lobby.add(name, ip)
-            lobby.last_added = name
         elif task == "leave":
             lobby.delete(name)
-            lobby.last_deleted = name
 
     response = app.response_class(
         response=json.dumps({
@@ -67,7 +65,10 @@ def modify_orders(player):
             game.delete_order(player, int(value), order_type)
 
     response = app.response_class(
-        response=json.dumps(game.accounting.players[player].to_dict()),
+        response=json.dumps({
+            'accounting': game.accounting.transactions(),
+            'player': game.accounting.players[player].to_dict()
+        }),
         status=200,
         mimetype='application/json')
 
